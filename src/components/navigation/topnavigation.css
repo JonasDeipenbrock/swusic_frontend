@@ -1,0 +1,19 @@
+nav {
+    display: flex;
+    justify-content: center;
+}
+
+nav a {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    color: red;
+    text-align: center;
+    text-decoration: none;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+nav a:hover {
+    background-color: lightgray;
+}
