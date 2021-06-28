@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as UserClient from '../../api/user-client';
 
 const UserContext = React.createContext();
 
@@ -10,6 +11,11 @@ function userReducer(state, action) {
         case 'logout': {
             return {
                 user: { name: undefined, mail: undefined, token: undefined },
+            };
+        }
+        case 'signup': {
+            return {
+                user: action.user,
             };
         }
         default: {
@@ -40,8 +46,8 @@ async function updateUser(dispatch, user, updates) {
     dispatch({ type: 'start update', updates });
     try {
         //! implement a user client which does the call to the backend to update the user
-        //const updatedUser = await userClient.updateUser(user, updates)
-        //dispatch({ type: 'finish update', updatedUser });
+        const updatedUser = await UserClient.updateUser(user, updates);
+        dispatch({ type: 'finish update', updatedUser });
         console.warn('Not yet updated but called with:', { user, updates });
     } catch (error) {
         dispatch({ type: 'fail update', error });

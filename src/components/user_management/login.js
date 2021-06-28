@@ -6,8 +6,6 @@ export default function Login() {
         state: { user },
     } = useUser();
     const { dispatch } = useUser();
-    console.log(user);
-    console.log('dispatch:', dispatch);
 
     function updateThis() {
         const newUser = {

@@ -1,37 +1,69 @@
 import * as React from 'react';
+import { createUser } from '../../api/user-client';
+import { useUser } from '../../context/user/user-context';
 
 export default function Registration() {
-    const [input, changeInput] = React.useState({
-        name: undefined,
-        mail: undefined,
-        password: undefined,
-    });
+    const [name, changeName] = React.useState('');
+    const [mail, changeMail] = React.useState('');
+    const [password, changePassword] = React.useState('');
 
-    function onChange(event) {
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
-        const newInput = input;
-        newInput[name] = value;
-        changeInput(newInput);
+    const { dispatch } = useUser();
+
+    function submit(event) {
+        event.preventDefault();
+        const newUser = {
+            name: name,
+            mail: mail,
+            password: password,
+        };
+        try {
+            createUser(newUser);
+        } catch (error) {
+            console.error(error);
+        }
+        dispatch({ type: 'signup', user: newUser });
+        console.log('Created a new user', newUser);
     }
-
-    function submit() {
-        alert('Submitted', input.name);
-    }
-
-    console.log(input);
 
     return (
         <div className='register-main'>
             <form onSubmit={submit}>
                 <label>
                     Name:
-                    <input type='text' value={input.name} onChange={onChange} />
+                    <input
+                        type='text'
+                        autoFocus={true}
+                        value={name}
+                        required='required'
+                        onChange={(event) => {
+                            event.preventDefault();
+                            changeName(event.target.value);
+                        }}
+                    />
                 </label>
                 <label>
                     Mail:
-                    <input type='' value={input.mail} onChange={onChange} />
+                    <input
+                        type='email'
+                        required='required'
+                        value={mail}
+                        onChange={(event) => {
+                            event.preventDefault();
+                            changeMail(event.target.value);
+                        }}
+                    />
+                </label>
+                <label>
+                    Password:
+                    <input
+                        type='password'
+                        required='required'
+                        value={password}
+                        onChange={(event) => {
+                            event.preventDefault();
+                            changePassword(event.target.value);
+                        }}
+                    />
                 </label>
                 <input type='submit' name='Submit'></input>
             </form>
